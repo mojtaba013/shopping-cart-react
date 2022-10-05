@@ -1,17 +1,17 @@
+import { NavLink } from "react-router-dom";
 import { useCart, useCartAction } from "../Providers/CartProvider";
-import './cartPage.css'
+import "./cartPage.css";
 const CartPage = () => {
-  const { cart,total} = useCart();
-console.log("sex",useCart());
-  const dispatch=useCartAction();
+  const { cart, total } = useCart();
+  console.log("sex", useCart());
+  const dispatch = useCartAction();
   if (!cart.length) return <p>Cart is Empty</p>;
-  const incHandler=(cartitem)=>{
-    dispatch({type:'ADD_TO_CART',payload:cartitem});
-  }
-  const decHandler=(cartitem)=>{
-    dispatch({type:'REMOVE',payload:cartitem});
-  }
-  
+  const incHandler = (cartitem) => {
+    dispatch({ type: "ADD_TO_CART", payload: cartitem });
+  };
+  const decHandler = (cartitem) => {
+    dispatch({ type: "REMOVE", payload: cartitem });
+  };
 
   return (
     <main className="container">
@@ -24,23 +24,48 @@ console.log("sex",useCart());
                   <img src={item.image} alt="" />
                 </div>
                 <div>{item.name}</div>
-                <div>{item.price * item.quantity}</div>
-                <div>
-                  <button onClick={()=>decHandler(item)}>remove</button>
+                <div>{item.offPrice * item.quantity}</div>
+                <div className="btnGroup">
+                  <button onClick={() => decHandler(item)}>-</button>
                   <button>{item.quantity}</button>
-                  <button onClick={()=>incHandler(item)}>Add</button>
+                  <button onClick={() => incHandler(item)}>+</button>
                 </div>
               </div>
             );
           })}
         </section>
-        <section className="cartSummery">
-          <h2>cart summery</h2>
-          <div>{total}</div>
-        </section>
+        <Cartsummery />
       </section>
     </main>
   );
 };
 
 export default CartPage;
+
+const Cartsummery = () => {
+  const { cart, total } = useCart();
+  const originTotalPrice = cart.length
+    ? cart.reduce((acc, curr) => acc + curr.quantity * curr.price, 0)
+    : 0;
+  return (
+    <section className="cartSummery">
+      <h2 style={{ marginBottom: "30px" }}>cart summery</h2>
+      <div className="summeryItem">
+        <p>Original Total Price</p>
+        <p>{originTotalPrice}$</p>
+      </div>
+      <div className="summeryItem">
+        <p>cart discount</p>
+        <p>{originTotalPrice - total}$</p>
+      </div>
+      <div className="summeryItem net">
+        <p>net price</p>
+        <p>{total}$</p>
+      </div>
+      <NavLink to="/checkout">
+          <button>CheckOut</button>
+      </NavLink>
+    
+    </section>
+  );
+};
