@@ -1,5 +1,5 @@
 .App {
-  text-align: center;
+  /* text-align: center; */
 }
 
 * {
@@ -53,9 +53,16 @@ body {
   padding: 6px 15px;
   background-color: #ede9fe;
   color: #6d28d9;
+  
 }
 
 .primary {
   background-color: #6d28d9;
   color: #fff;
+}
+
+button:disabled{
+  cursor: not-allowed;
+  background-color: #ccc;
+  color: #444;
 }

@@ -1,9 +1,10 @@
-import { NavLink } from "react-router-dom";
+import { Navigate, NavLink, useNavigate, useSearchParams } from "react-router-dom";
+import { useAuth, useAuthAction } from "../Providers/AuthProvider";
 import { useCart, useCartAction } from "../Providers/CartProvider";
 import "./cartPage.css";
 const CartPage = () => {
   const { cart, total } = useCart();
-  console.log("sex", useCart());
+
   const dispatch = useCartAction();
   if (!cart.length) return <p>Cart is Empty</p>;
   const incHandler = (cartitem) => {
@@ -44,6 +45,8 @@ export default CartPage;
 
 const Cartsummery = () => {
   const { cart, total } = useCart();
+  
+
   const originTotalPrice = cart.length
     ? cart.reduce((acc, curr) => acc + curr.quantity * curr.price, 0)
     : 0;
@@ -62,10 +65,10 @@ const Cartsummery = () => {
         <p>net price</p>
         <p>{total}$</p>
       </div>
-      <NavLink to="/checkout">
-          <button>CheckOut</button>
+      <NavLink to="/signup?redirect=checkout">
+        <button>CheckOut</button>
       </NavLink>
-    
+      
     </section>
   );
 };
